@@ -1,0 +1,5 @@
+5
+leet code hello good money
+10
+o n e y d h e l l g
+1 2 3 1 0 0 2 0 5 0 1 0 7 0 9 1 1 0 0 0 1 2 0 0 0 0

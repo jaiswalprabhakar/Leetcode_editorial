@@ -61,7 +61,7 @@ int main()
         insertNode(a, temp);
     }
     cin>>pos;
-    if(pos>0 && pos<=n)
+    if(pos>=0)
         make_loop(a,pos);
     cout<<hasCycle(a);
     return 0; 

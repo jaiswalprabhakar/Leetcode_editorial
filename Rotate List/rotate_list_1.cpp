@@ -24,36 +24,45 @@ void insertNode(ListNode* &head,int val) {
     temp->next = newNode;
     return;
 }
-bool hasCycle(ListNode *head) {
-    if(head == NULL)
-        return false;
-    
-    ListNode *fast = head;
-    ListNode *slow = head;
-    
-    while(fast != NULL && fast ->next != NULL)
-    {
-        fast = fast->next->next;
-        slow = slow->next;
-        if(fast == slow)
-            return true;
+void printList(ListNode *node) 
+{ 
+    while (node!=NULL) 
+    { 
+        cout<<node->val<<" "; 
+        node = node->next; 
+    } 
+} 
+ListNode* rotateRight(ListNode* head, int k) {
+    if(head == NULL || head->next == NULL){
+        return head;
     }
-    return false;
+    ListNode * temp = head;
+    int length =0;
+    while(temp!= NULL){
+        temp = temp->next;
+        length++;
+    }
+    if ( k%length == 0){
+        return head;
+    }
+    int n ;
+    n = k%length;
+    for(int i = 1 ; i <= n ; i++ ){
+        temp = head;
+        while(temp->next->next!=NULL){
+            temp = temp->next;
+        }
+        temp->next->next = head;
+        head = temp->next;
+        temp->next = NULL;
+    }
+    
+    return head;
 }
-void make_loop(ListNode* head, int k){
-    ListNode* curr = head;
-    for(int i=1; i<k; i++){
-        curr = curr->next;
-    }
-    ListNode* kth_pos = curr;
-    while(curr->next != NULL)
-        curr = curr->next;
-    curr->next = kth_pos;
-    //a->next->next->next->next = a;
-}  
 int main() 
 { 
     ListNode* a = NULL; 
+    ListNode* res=NULL;
     int n, temp, pos;
     cin>>n;
     while(n--){
@@ -61,8 +70,7 @@ int main()
         insertNode(a, temp);
     }
     cin>>pos;
-    if(pos>=0)
-        make_loop(a,pos);
-    cout<<hasCycle(a);
+    res = rotateRight(a, pos);
+    printList(res);
     return 0; 
 } 

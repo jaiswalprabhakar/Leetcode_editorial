@@ -72,9 +72,7 @@ int main()
     }
     cin>>k;
     res = reverseKGroup(a, k); 
-  
     printList(res); 
-  
     return 0; 
 } 
 

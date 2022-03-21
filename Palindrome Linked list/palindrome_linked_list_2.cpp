@@ -25,42 +25,36 @@ void insertNode(ListNode* &head,int val) {
     temp->next = newNode;
     return;
 }
-bool hasCycle(ListNode *head) {
-    if(head==NULL)
-        return false;
-    unordered_map<ListNode*,int> map;
-    while(head!=NULL){
-        if(map.count(head)>0)
-            return true;
-        else
-            map[head]=1;
-        head=head->next;
-    }
-    return false;
-}
-void make_loop(ListNode* head, int k){
-    ListNode* curr = head;
-    for(int i=1; i<k; i++){
-        curr = curr->next;
-    }
-    ListNode* kth_pos = curr;
-    while(curr->next != NULL)
-        curr = curr->next;
-    curr->next = kth_pos;
-    //a->next->next->next->next = a;
+void printList(ListNode *node) 
+{ 
+    while (node!=NULL) 
+    { 
+        cout<<node->val<<" "; 
+        node = node->next; 
+    } 
+} 
+bool isPalindrome(ListNode* head) {
+    ListNode *slow = head, *fast = head, *prev, *temp;
+    while (fast && fast->next)
+        slow = slow->next, fast = fast->next->next;
+    prev = slow, slow = slow->next, prev->next = NULL;
+    while (slow)
+        temp = slow->next, slow->next = prev, prev = slow, slow = temp;
+    fast = head, slow = prev;
+    while (slow)
+        if (fast->val != slow->val) return false;
+        else fast = fast->next, slow = slow->next;
+    return true;
 }  
 int main() 
 { 
-    ListNode* a = NULL; 
-    int n, temp, pos;
+    ListNode* a = NULL;  
+    int n, temp;
     cin>>n;
     while(n--){
         cin>>temp;
         insertNode(a, temp);
     }
-    cin>>pos;
-    if(pos>=0)
-        make_loop(a,pos);
-    cout<<hasCycle(a);
+    cout<<isPalindrome(a)<<"\n";
     return 0; 
 } 

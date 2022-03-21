@@ -1,3 +1,4 @@
+//Hashmap method
 #include <bits/stdc++.h>
 using namespace std;
   
@@ -24,45 +25,41 @@ void insertNode(ListNode* &head,int val) {
     temp->next = newNode;
     return;
 }
-bool hasCycle(ListNode *head) {
-    if(head == NULL)
-        return false;
-    
-    ListNode *fast = head;
-    ListNode *slow = head;
-    
-    while(fast != NULL && fast ->next != NULL)
+void printList(ListNode *node) 
+{ 
+    while (node!=NULL) 
+    { 
+        cout<<node->val<<" "; 
+        node = node->next; 
+    } 
+} 
+bool isPalindrome(ListNode* head){
+    int arr[100000]={-1};
+    ListNode* ptr=head;
+    int i=0;
+    while(ptr){
+        arr[i++]=ptr->val;
+        ptr=ptr->next;
+    }
+    i--;
+    ptr=head;
+    while(ptr)
     {
-        fast = fast->next->next;
-        slow = slow->next;
-        if(fast == slow)
-            return true;
+        if(arr[i--]!=ptr->val)
+        return false;
+        ptr=ptr->next;
     }
-    return false;
+    return true;
 }
-void make_loop(ListNode* head, int k){
-    ListNode* curr = head;
-    for(int i=1; i<k; i++){
-        curr = curr->next;
-    }
-    ListNode* kth_pos = curr;
-    while(curr->next != NULL)
-        curr = curr->next;
-    curr->next = kth_pos;
-    //a->next->next->next->next = a;
-}  
 int main() 
 { 
-    ListNode* a = NULL; 
-    int n, temp, pos;
+    ListNode* a = NULL;  
+    int n, temp;
     cin>>n;
     while(n--){
         cin>>temp;
         insertNode(a, temp);
     }
-    cin>>pos;
-    if(pos>=0)
-        make_loop(a,pos);
-    cout<<hasCycle(a);
+    cout<<isPalindrome(a)<<"\n";
     return 0; 
 } 

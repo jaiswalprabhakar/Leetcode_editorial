@@ -24,36 +24,46 @@ void insertNode(ListNode* &head,int val) {
     temp->next = newNode;
     return;
 }
-bool hasCycle(ListNode *head) {
-    if(head == NULL)
-        return false;
-    
-    ListNode *fast = head;
-    ListNode *slow = head;
-    
-    while(fast != NULL && fast ->next != NULL)
-    {
-        fast = fast->next->next;
-        slow = slow->next;
-        if(fast == slow)
-            return true;
-    }
-    return false;
+void printList(ListNode *node) 
+{ 
+    while (node!=NULL) 
+    { 
+        cout<<node->val<<" "; 
+        node = node->next; 
+    } 
 }
-void make_loop(ListNode* head, int k){
-    ListNode* curr = head;
-    for(int i=1; i<k; i++){
-        curr = curr->next;
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+    ListNode *first = head;
+    ListNode *second = head;
+    while(n--)
+    {
+        first = first->next;
     }
-    ListNode* kth_pos = curr;
-    while(curr->next != NULL)
-        curr = curr->next;
-    curr->next = kth_pos;
-    //a->next->next->next->next = a;
+    //case where n < length of linked list
+    if(first)
+    {
+        while(first->next)
+        {
+            first = first->next;
+            second = second->next;
+        }
+        ListNode *node_to_delete = second->next;
+        second->next = second->next->next;
+        delete node_to_delete;
+    }
+    //case where n == length of linked list
+    else if(!first)
+    {
+        ListNode *node_to_delete = head;
+        head = head->next;
+        delete node_to_delete;
+    }
+    return head;
 }  
 int main() 
 { 
     ListNode* a = NULL; 
+    ListNode* res = NULL;
     int n, temp, pos;
     cin>>n;
     while(n--){
@@ -61,8 +71,7 @@ int main()
         insertNode(a, temp);
     }
     cin>>pos;
-    if(pos>=0)
-        make_loop(a,pos);
-    cout<<hasCycle(a);
+    res = removeNthFromEnd(a, pos);
+    printList(res);
     return 0; 
 } 

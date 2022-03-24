@@ -32,58 +32,41 @@ void printList(ListNode *node)
         node = node->next; 
     } 
 }
-ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-    ListNode *p = l1;
-    ListNode *q = l2;
-    int carry = 0;
-    ListNode *dummy = new ListNode(0);
-    dummy->next = NULL;
-    ListNode *res = dummy;
-    while(p!=NULL && q!=NULL){
-        int data = p->val + q->val + carry;
-        ListNode *t = new ListNode(0);
-        t->next = NULL;
-        t->val = data%10;
-        carry = data/10;
-        res->next = t;
-        res = t;
-        p = p->next;
-        q = q->next;
+ListNode* make_intersection(ListNode* head, ListNode* tail, int k){
+    ListNode* curr = head;
+    for(int i=1; i<k; i++){
+        curr = curr->next;
     }
-    while(p!=NULL){
-        int data = p->val + carry;
-        ListNode *t = new ListNode(0);
-        t->next = NULL;
-        t->val = data%10;
-        carry = data/10;
-        res->next = t;
-        res = t;
-        p = p->next;
-    }
-    while(q!=NULL){
-        int data =  q->val + carry;
-        ListNode *t = new ListNode(0);
-        t->next = NULL;
-        t->val = data%10;
-        carry = data/10;  
-        res->next = t;
-        res = t;
-        q = q->next;
-    }
-    if(carry!=0){           
-        ListNode *t = new ListNode(0);
-        t->next = NULL;
-        t->val = carry;
-        res->next = t;
-        res = t;
-    }
-    return dummy->next;
+    ListNode* tail_pos = tail;
+    while(tail_pos->next != NULL)
+        tail_pos = tail_pos->next;
+    tail_pos->next = curr;
+    return curr;
 }  
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    ListNode *tempA=headA;
+    ListNode *tempB=headB;
+    if((tempA==NULL)||(tempB==NULL))
+        return NULL;
+    while(tempB!=NULL)
+    {
+        while(tempA!=NULL)
+        {
+            if(tempA==tempB)
+                return tempA;
+            tempA=tempA->next;
+        }
+        tempA=headA;
+        tempB=tempB->next;
+    }
+    return NULL;
+}
 int main() { 
     ListNode* a = NULL; 
     ListNode* b = NULL;
     ListNode* res = NULL;
-    int n, m, temp;
+    ListNode* pos = NULL;
+    int n, m, temp,k;
     cin>>n;
     while(n--){
         cin>>temp;
@@ -94,7 +77,13 @@ int main() {
         cin>>temp;
         insertNode(b, temp);
     }
-    res = addTwoNumbers(a, b);
-    printList(res);
+    cin>>k;
+    if(k>0)
+        pos = make_intersection(a,b, k);
+    res = getIntersectionNode(a, b);
+    if(res != NULL && res==pos)
+        cout<<true<<"\n";
+    else
+        cout<<false<<"\n";
     return 0; 
 } 

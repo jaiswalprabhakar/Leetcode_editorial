@@ -32,6 +32,17 @@ void printList(ListNode *node)
         node = node->next; 
     } 
 }
+ListNode* make_intersection(ListNode* head, ListNode* tail, int k){
+    ListNode* curr = head;
+    for(int i=1; i<k; i++){
+        curr = curr->next;
+    }
+    ListNode* tail_pos = tail;
+    while(tail_pos->next != NULL)
+        tail_pos = tail_pos->next;
+    tail_pos->next = curr;
+    return curr;
+}  
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
     ListNode *a = headA, *b = headB;
     while (a != b) {
@@ -44,7 +55,8 @@ int main() {
     ListNode* a = NULL; 
     ListNode* b = NULL;
     ListNode* res = NULL;
-    int n, m, temp;
+    ListNode* pos = NULL;
+    int n, m, temp,k;
     cin>>n;
     while(n--){
         cin>>temp;
@@ -55,8 +67,13 @@ int main() {
         cin>>temp;
         insertNode(b, temp);
     }
-    //res = getIntersectionNode(a, b);
-    cout<<getIntersectionNode(a,b);
-    //printList(res);
+    cin>>k;
+    if(k>0)
+        pos = make_intersection(a,b, k);
+    res = getIntersectionNode(a, b);
+    if(res != NULL && res==pos)
+        cout<<true<<"\n";
+    else
+        cout<<false<<"\n";
     return 0; 
 } 

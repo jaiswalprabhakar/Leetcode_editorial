@@ -7,9 +7,12 @@ vector<vector<int>> intervalIntersection(vector<vector<int>>& A, vector<vector<i
     while(i<A.size() && j<B.size()){
         int l=max(A[i][0], B[j][0]);
         int u=min(A[i][1], B[j][1]);
-        if(l<=u) v.push_back({l,u});
-        if(A[i][1] < B[j][1])   i++;
-        else j++;
+        if(l<=u) 
+            v.push_back({l,u});
+        if(A[i][1] < B[j][1])   
+            i++;
+        else 
+            j++;
     }
     return v;
 }

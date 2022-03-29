@@ -1,47 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
-  
-vector<vector<int>> intervalIntersection(vector<vector<int>>& A, vector<vector<int>>& B) {
-    vector<vector<int>> v;
-    int i=0,j=0;
-    while(i<A.size() && j<B.size()){
-        int l=max(A[i][0], B[j][0]);
-        int u=min(A[i][1], B[j][1]);
-        if(l<=u) 
-            v.push_back({l,u});
-        if(A[i][1] < B[j][1])   
-            i++;
-        else 
-            j++;
+
+int getPos(vector<int>& arr, int k)
+{
+    for(int i=0;i<arr.size();i++)
+    {
+        if(arr[i]==k)
+            return i;
     }
-    return v;
+    return -1;
+}
+
+void reverseArr(vector<int>& arr, int k)
+{
+    int i=0,j=k;
+    while(i<j)
+    {
+        int temp = arr[i];
+        arr[i]=arr[j];
+        arr[j]=temp;
+        i++;
+        j--;
+    }
+}
+vector<int> pancakeSort(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> res;
+    for(int i=n;i>0;i--){
+        int pos = getPos(arr,i);
+        if(pos==i-1)
+            continue;
+        else if(pos!=0)
+        {
+            res.push_back(pos+1);
+            reverseArr(arr,pos);
+        }
+        res.push_back(i);
+        revers
+    return res;
 }
 int main() { 
-    int m, n;
+    int n;
     cin>>n;
-    vector<vector<int>> first;
+    vector<int> arr(n);
+    vector<int> result;
     for(int i=0; i<n; i++){
-        vector<int> temp(2);
-        for(int j=0; j<2; j++){
-            cin>>temp[j];
-        }
-        first.push_back(temp);
+        cin>>arr[i];
     }
-    cin>>m;
-    vector<vector<int>> second;
-    for(int i=0; i<m; i++){
-        vector<int> temp(2);
-        for(int j=0; j<2; j++){
-            cin>>temp[j];
-        }
-        second.push_back(temp);
-    }
-    vector<vector<int>> result;
-    result = intervalIntersection(first, second);
-    for(int i=0; i< result.size(); i++){
-        for(int j=0; j<2; j++){
-            cout<<result[i][j]<<" ";
-        }
+    result = pancakeSort(arr);
+    for(int i=0; i<result.size(); i++){
+        cout<<result[i]<<" ";
     }
     return 0; 
 } 

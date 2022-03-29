@@ -39,7 +39,7 @@ int main() {
         cin>>arr[i];
     }
     result = pancakeSort(arr);
-    for(int i=0; i<n; i++){
+    for(int i=0; i<result.size(); i++){
         cout<<result[i]<<" ";
     }
     return 0; 

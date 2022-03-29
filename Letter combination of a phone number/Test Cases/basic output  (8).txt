@@ -1,0 +1,4 @@
+gmpt gmpu gmpv gmqt gmqu gmqv gmrt gmru gmrv gmst gmsu gmsv gnpt gnpu gnpv gnqt gnqu gnqv gnrt gnru gnrv gnst gnsu gnsv gopt gopu gopv 
+goqt goqu goqv gort goru gorv gost gosu gosv hmpt hmpu hmpv hmqt hmqu hmqv hmrt hmru hmrv hmst hmsu hmsv hnpt hnpu hnpv hnqt hnqu hnqv 
+hnrt hnru hnrv hnst hnsu hnsv hopt hopu hopv hoqt hoqu hoqv hort horu horv host hosu hosv impt impu impv imqt imqu imqv imrt imru imrv 
+imst imsu imsv inpt inpu inpv inqt inqu inqv inrt inru inrv inst insu insv iopt iopu iopv ioqt ioqu ioqv iort ioru iorv iost iosu iosv 

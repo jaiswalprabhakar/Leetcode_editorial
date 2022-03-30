@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
   
-class ListNode 
-{ 
+class ListNode { 
     public:
         int val; 
         ListNode* next;
@@ -24,46 +23,35 @@ void insertNode(ListNode* &head,int val) {
     temp->next = newNode;
     return;
 }
-void printList(ListNode *node) 
-{ 
-    while (node!=NULL) 
-    { 
+void printList(ListNode *node) { 
+    while (node!=NULL) { 
         cout<<node->val<<" "; 
         node = node->next; 
     } 
 }
+
 ListNode* deleteDuplicates(ListNode* head) {
     if(!head)
-        return NULL;
-    ListNode* dummy=new ListNode(INT_MAX);
-    dummy->next=head;
-    ListNode* pre=dummy, *cur=head, *next=head->next;
-    bool flag=false;
-    while(next){
-        if(next->val==cur->val){
-            flag=true;
-            next=next->next;
-        }
-        else{
-            if(flag) {
-                pre->next=next;
-                cur=next;
-                next=next->next;
-            }
-            else{
-                pre=pre->next;
-                cur=cur->next;
-                next=next->next;
-            }
-            flag=false;
-        }
+        return 0;
+    if(!head -> next)
+        return head;
+    int val = head ->val;
+    ListNode *temp = head -> next;
+    if(temp -> val != val){
+        head -> next = deleteDuplicates(temp);
+        return head;
     }
-    //the corner cases : if the duplicate number locates at the end 
-    if(flag) pre->next=next;
-    return dummy->next;
-}  
-int main() 
-{ 
+    else{
+        while(temp && temp -> val == val){
+            ListNode *p = temp;
+            temp = temp->next;
+            delete p;
+        }
+        return deleteDuplicates(temp);
+    }
+}
+ 
+int main() { 
     ListNode* a = NULL; 
     ListNode* res = NULL;
     int n, temp;

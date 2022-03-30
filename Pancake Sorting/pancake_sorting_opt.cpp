@@ -36,7 +36,8 @@ vector<int> pancakeSort(vector<int>& arr) {
             reverseArr(arr,pos);
         }
         res.push_back(i);
-        revers
+        reverseArr(arr,i-1);
+    }
     return res;
 }
 int main() { 

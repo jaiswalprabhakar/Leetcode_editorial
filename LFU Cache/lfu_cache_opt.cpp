@@ -99,13 +99,26 @@ private:
 	}
 };
 int main() { 
-    int n, k;
-    string result;
+    int n, capacity, key, value, temp;
+    string task;
+    cin>>capacity;
     cin>>n;
-    cin>>k;
-
-    Solution *obj = new Solution();
-    result = obj->crackSafe(n,k);
-    cout<<result;
+	vector<int> result;
+    LFUCache *obj = new LFUCache(capacity);
+    while(n--){
+        cin>>task;
+        if(task == "put"){
+            cin>>key>>value;
+            obj->set(key, value);
+        }
+        else if(task=="get"){
+            cin>>key;
+            temp = obj->get(key);
+			result.push_back(temp);
+        }
+    }
+	for(int i=0; i<result.size(); i++){
+		cout<<result[i]<<" ";
+	}
     return 0; 
 } 

@@ -11,21 +11,15 @@ public:
         right = nullptr;
     }
 };
-int height(Node* root)
-{
-    if(root == NULL)
-        return 0;
-    return max(height(root->left) , height(root->right)) + 1;
+pair<int,int> BinaryTreeTilt(Node* root){
+    if(!root)
+        return {0,0};
+    pair<int,int> l = BinaryTreeTilt(root->left); // {sum of tilt values for left child,left child subtree sum}
+    pair<int,int> r = BinaryTreeTilt(root->right); // {sum of tilt values for right child,right child subtree sum}
+    return {l.first+r.first+abs(l.second-r.second),l.second+r.second+root->data};
 }
-bool balanced(Node* root)
-{
-    if(root == NULL)
-    return true;
-    int l = height(root->left) , r = height(root->right);
-    //calling height function at every node
-    if(abs(l - r) > 1)
-        return false;
-    return balanced(root->left) && balanced(root->right);
+int findTilt(Node* root) {
+    return BinaryTreeTilt(root).first; // answer is first element of pair
 }
 int main()
 {
@@ -64,7 +58,7 @@ int main()
         }
     }
 
-    bool result = balanced(root);
+    int result = findTilt(root);
     cout<<result;
     return 0;
 }

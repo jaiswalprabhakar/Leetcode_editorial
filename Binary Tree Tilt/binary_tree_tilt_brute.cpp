@@ -11,21 +11,41 @@ public:
         right = nullptr;
     }
 };
-int height(Node* root)
+int res = 0;
+
+void find_sum(Node* root, int &sum)
 {
+    if(root == NULL)
+        return ;
+    
+    sum = sum + root->data;
+    
+    find_sum(root->left,sum);
+    find_sum(root->right,sum);
+}
+
+void helper(Node* root)
+{
+    if(root == NULL)
+        return ;
+    
+    int left_sum = 0;
+    int right_sum = 0;
+    
+    find_sum(root->left, left_sum);
+    find_sum(root->right,right_sum);
+    
+    res = res + abs(left_sum - right_sum);
+    
+    helper(root->left);
+    helper(root->right);
+}
+
+int findTilt(Node* root) {
     if(root == NULL)
         return 0;
-    int l = height(root->left);
-    int r = height(root->right);
-    if(l == -1 || r == -1 || abs(l - r) > 1)
-        return -1;
-    return max(l , r) + 1;
-}
-bool balanced(Node* root)
-{
-    if(root == NULL)
-        return true;
-    return (height(root) != -1);
+    helper(root);
+    return res;
 }
 int main()
 {
@@ -64,7 +84,7 @@ int main()
         }
     }
 
-    bool result = balanced(root);
+    int result = findTilt(root);
     cout<<result;
     return 0;
 }

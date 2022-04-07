@@ -1,96 +1,78 @@
 #include <bits/stdc++.h>
 using namespace std;
-  
-class ListNode 
-{ 
-    public:
-        int val; 
-        ListNode* next;
-        ListNode(int a){
-            val = a;
-            next = NULL;
-        } 
-}; 
-void insertNode(ListNode* &head,int val) {
-    ListNode* newNode = new ListNode(val);
-    if(head == NULL) {
-        head = newNode;
-        return;
+
+class Node{
+public:
+    int data;
+    Node *prev, *next,*child;
+    Node(int val){
+        data = val;
+        prev = nullptr;
+        next = nullptr;
+        child = nullptr;
     }
-    ListNode* temp = head;
-    while(temp->next != NULL)
-     temp = temp->next;
-    
-    temp->next = newNode;
-    return;
-}
-void printList(ListNode *node) 
+};
+/*void show(Node temp)
+{
+    if(temp==NULL)
+        return;
+    cout<<temp->data<<endl;
+    show(temp->child);
+    show(temp->right);
+}*/
+void printList(Node *node) 
 { 
     while (node!=NULL) 
     { 
-        cout<<node->val<<" "; 
+        cout<<node->data<<" "; 
         node = node->next; 
     } 
 }
-bool search(vector<int> &nums,int val1){
-    int start = 0, end = nums.size()-1,mid;
-    while(start<=end){
-        mid = start + (end-start)/2;
-        if(nums[mid] == val1){
-            return true;
-        }
-        else if(nums[mid]>val1){
-            end = mid-1;
-        }
-        else{
-            start = mid+1;
-        }
-    }
-    return false;
+Node* flatten(Node* head, Node* rest = nullptr) {
+  if (!head) return rest;
+  head->next = flatten(head->child, flatten(head->next, rest));
+  if (head->next) head->next->prev = head;
+  head->child = nullptr;
+  return head;
 }
-int numComponents(ListNode* head, vector<int>& nums) {
-    ListNode *temp = head;
-    bool flag = false;
-    int count = 0;
-    sort(nums.begin(),nums.end());
-    while(temp->next != NULL){
-        bool found = search(nums,temp->val);
-        if(!found && flag){
-            count++;
-            flag = false;
+int main()
+{
+    int n;
+    cin >> n;
+    int a[n];
+    for(int i=0;i<n;i++)
+        cin>>a[i];
+    Node *root=new Node(a[0]);
+    Node *curr=root;
+    Node *curr_root=root;
+    Node *result = NULL;
+    int idx=1;
+    while(idx<n)
+    {
+        if(a[idx]==-1)
+        {
+            idx++;
+            curr=curr_root;
+            while (a[idx]==-1)
+            {
+                idx++;
+                curr=curr->next;
+            }
+            curr->child=new Node(a[idx]);
+            curr_root=curr;
+            curr=curr->child;
+            idx++;
         }
-        else if(found){
-            flag = true;   
+        else
+        {
+            curr->next=new Node(a[idx]);
+            curr->next->prev=curr;
+            curr=curr->next;
+            idx++;
         }
-        else;
-        temp = temp->next;
+
     }
-    bool found = search(nums,temp->val);
-    if(!found && flag){
-        count++;
-        flag = false;
-    }
-    else if(found){
-        flag = true;
-        count++;
-    }
-    else;
-    return count;
-}  
-int main() { 
-    ListNode* a = NULL; 
-    int n, m, temp, res;
-    cin>>n;
-    while(n--){
-        cin>>temp;
-        insertNode(a, temp);
-    }
-    cin>>m;
-    vector<int> b(m);
-    for(int i=0; i<m; i++){
-        cin>>b[i];
-    }
-    res = numComponents(a, b);
-    cout<<res<<"\n";
-    return 0; 
-} 
+    result = flatten(root);
+    printList(result); 
+    return 0;
+}

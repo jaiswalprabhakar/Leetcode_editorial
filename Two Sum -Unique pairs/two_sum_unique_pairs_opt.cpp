@@ -1,20 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
   
-int twoSumLessThanK(vector<int>& A, int K, int S = -1) {
-    int nums[1001] = {};
-    for (auto i : A) 
-        ++nums[i];
-    for (int i = 1, j = 1000; i <= j;) {
-        if (!nums[j] || i + j >= K)
-            --j;
-    else{
-        if (nums[i] > 0 + (i == j))
-            S = max(S, i + j);
-        ++i;
-    } 
-}
-    return S;
+int twoSum6(vector<int> &nums, int target) {
+    set<pair<int, int>> unique_pairs;
+    unordered_map<int, int> numbers;
+    int size = nums.size();
+    for (int i = 0; i < size; i++) {
+        int num2 = nums[i];
+        int num1 = target - num2;
+
+        if (numbers.find(num1) != numbers.end() && numbers[num1] >= 1) {
+            pair<int, int> p = make_pair(min(num1, num2), max(num1, num2));
+            unique_pairs.insert(p);
+        }
+
+        ++numbers[num2];
+    }
+
+    return unique_pairs.size();
 }
 int main(){
     int n, target;
@@ -25,7 +28,7 @@ int main(){
         cin>>nums[i];
     }
     cin>>target;
-    result = twoSumLessThanK(nums, target);
+    result = twoSum6(nums, target);
     cout<<result;
     return 0;
 }

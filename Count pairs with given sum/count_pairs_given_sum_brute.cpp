@@ -1,26 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
-  
-int twoSumLessThanK(vector<int>& A, int K, int S = -1) {
-    sort(begin(A), end(A));
-    for (int i = 0, j = A.size() - 1; i < j; ) {
-        if (A[i] + A[j] < K) 
-            S = max(S, A[i++] + A[j]);
-        else 
-            --j;
-  }
-  return S;
-}
-int main(){
-    int n, target;
-    cin>>n;
-    vector<int> nums(n);
-    int result;
-    for(int i=0; i<n; i++){
-        cin>>nums[i];
+
+class Solution{   
+public:
+    int getPairsCount(int arr[], int n, int sum) {
+        int count = 0; // Initialize result
+        // Consider all possible pairs and check their sums
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j < n; j++)
+                if (arr[i] + arr[j] == sum)
+                    count++;
+    
+        return count;
     }
-    cin>>target;
-    result = twoSumLessThanK(nums, target);
-    cout<<result;
+};
+
+int main() {
+    int n, k;
+    cin >> n;
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    cin>>k;
+    Solution ob;
+    auto ans = ob.getPairsCount(arr, n, k);
+    cout << ans << "\n";
     return 0;
-}
+}  

@@ -1,15 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
   
-int twoSumLessThanK(vector<int>& A, int K, int S = -1) {
-    sort(begin(A), end(A));
-    for (int i = 0, j = A.size() - 1; i < j; ) {
-        if (A[i] + A[j] < K) 
-            S = max(S, A[i++] + A[j]);
-        else 
-            --j;
-  }
-  return S;
+int twoSum6(vector<int> &nums, int target) {
+    if(nums.size() < 2) return 0;
+    int l = 0, r = nums.size()-1;
+    int count = 0;
+    sort(nums.begin(), nums.end());
+    while(l < r) {
+        if(l > 0 && nums[l] == nums[l-1]) {
+            l++;
+            continue;
+        }
+        if(nums[l] + nums[r] == target) {
+            count++;
+            l++;
+            r--;
+        } else if (nums[l] + nums[r] < target) {
+            l++;
+        } else {
+            r--;
+        }
+    }
+    return count;
 }
 int main(){
     int n, target;
@@ -20,7 +32,7 @@ int main(){
         cin>>nums[i];
     }
     cin>>target;
-    result = twoSumLessThanK(nums, target);
+    result = twoSum6(nums, target);
     cout<<result;
     return 0;
 }

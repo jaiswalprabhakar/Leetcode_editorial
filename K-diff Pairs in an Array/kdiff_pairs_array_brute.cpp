@@ -1,22 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int threeSumClosest(vector<int> &nums, int target){
-    int n = nums.size();
-    int ans = INT_MAX;
-    for (int i = 0; i < n - 2; i++){
-        for (int j = i + 1; j < n - 1; j++){
-            for (int k = j + 1; k < n; k++){
-                int sum = nums[i] + nums[j] + nums[k];
-                if (abs(sum - target) < abs(ans)){
-                    ans = sum - target;
-                }
+int findPairs(vector<int>& nums, int k) {
+    sort(nums.begin(),nums.end());
+    int ans=0,i=0,j=1;
+    for(i,j;i<nums.size() and j<nums.size();){
+        if(i==j or nums[j]-nums[i]<k)
+            j++;
+        else {
+            if(nums[j]-nums[i]==k){
+                ans++;
+                j++;
+                for(;j<nums.size();j++)
+                    if(nums[j]!=nums[j-1])
+                        break;
+                if(j==nums.size())
+                return ans;
+                j--;                  
             }
+            i++;
+            while(i<j and nums[i]==nums[i-1])
+                i++;
         }
     }
-    return ans + target;
+    return ans;
 }
-
 int main(){
     int n, target;
     cin>>n;
@@ -26,7 +34,7 @@ int main(){
         cin>>nums[i];
     }
     cin>>target;
-    result = threeSumClosest(nums, target);
+    result = findPairs(nums, target);
     cout<<result<<" ";
     return 0;
 }

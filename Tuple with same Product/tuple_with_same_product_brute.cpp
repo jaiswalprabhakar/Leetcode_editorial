@@ -1,33 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-vector<int> twoSum(vector<int>& nums, int target) {
-    int N = nums.size();
-    for(int i=0;i<N-1;i++){
-        int lo = i+1;
-        int hi = N;
-        while(lo<hi){
-            int mid = lo + (hi-lo)/2;
-            if(nums[mid]==target-nums[i]) return {i+1,mid+1};
-            else if(nums[mid]>=target-nums[i]) hi=mid;
-            else lo = mid+1;
+  
+int tupleSameProduct(vector<int>& nums) {
+    sort(nums.begin(),nums.end());
+    int ans = 0;
+    int n = nums.size();
+    for(int i=0;i<n;i++){
+        for(int j = i+1;j<n;j++){
+            int count = 0;
+            int prod = nums[i] * nums[j];
+            int k=0,l=n-1;
+            while(k < l){
+                if(k == i or k == j) { k++; continue; }
+                if(l == i or l == j) { l--; continue; }
+                int ele1 = nums[k], ele2 = nums[l];
+                int curr_prod = ele1 * ele2;
+                if(curr_prod > prod) l--;
+                else if(curr_prod < prod) k++;
+                else count++, k++,l--;
+            }
+            ans += (count * 4);
         }
-        if(lo!=nums.size() && nums[lo]==target-nums[i]) return {i+1,lo+1};
     }
-    return {}; // not found
+    return ans;
 }
 int main(){
     int n, target;
     cin>>n;
     vector<int> nums(n);
-    vector<int> result;
+    int result;
     for(int i=0; i<n; i++){
         cin>>nums[i];
     }
-    cin>>target;
-    result = twoSum(nums, target);
-    for(int i=0; i<result.size(); i++){
-        cout<<result[i]<<" ";
-    }
+    result = tupleSameProduct(nums);
+    cout<<result<<" ";
     return 0;
 }

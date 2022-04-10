@@ -1,28 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
   
-vector<int> twoSum(vector<int>& nums, int target) {
-    int i=0,j=nums.size()-1;
-    while(i<j){
-        int sum = nums[i] + nums[j];
-        if(sum==target) return {i+1,j+1};
-        else if(sum>target) j--;
-        else i++;
+int tupleSameProduct(vector<int>& nums) {
+    int n = nums.size();
+    unordered_map<int,int> umap;
+    int res = 0;
+    for(int i = 0 ; i < n ; ++i){
+        for(int j = 0 ; j < i ; ++j){
+            int prod = nums[i] * nums[j];
+            /*Every tuple has 8 permutations*/
+            res += 8 * umap[prod];
+            ++umap[prod];
+        }
     }
-    return {}; // not found
+    return res;
 }
 int main(){
     int n, target;
     cin>>n;
     vector<int> nums(n);
-    vector<int> result;
+    int result;
     for(int i=0; i<n; i++){
         cin>>nums[i];
     }
-    cin>>target;
-    result = twoSum(nums, target);
-    for(int i=0; i<result.size(); i++){
-        cout<<result[i]<<" ";
-    }
+    result = tupleSameProduct(nums);
+    cout<<result<<" ";
     return 0;
 }

@@ -1,22 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int threeSumClosest(vector<int> &nums, int target) {
-    int n = nums.size();
-    sort(nums.begin(), nums.end());
-    int best = numeric_limits<int>::max();
-    for (int i = 0; i < n - 2; ++i) {
-        int l = i + 1, r = n - 1;
-        while (l < r) {
-            int gap = nums[i] + nums[l] + nums[r] - target;
-            if (abs(gap) < abs(best)) best = gap;
-            else if (gap < 0)
-                ++l;
-            else
-                --r;
+int findPairs(vector<int>& nums, int k) {
+    unordered_map<int,int> a;
+    for(int i:nums)
+        a[i]++;
+    int ans=0;
+    for(auto x:a){
+        if(k==0){    
+            if(x.second>1)
+            ans++;
         }
+        else if(a.find(x.first+k)!=a.end())
+        ans++;
     }
-    return target + best;
+    return ans;
 }
 int main(){
     int n, target;
@@ -27,7 +25,7 @@ int main(){
         cin>>nums[i];
     }
     cin>>target;
-    result = threeSumClosest(nums, target);
+    result = findPairs(nums, target);
     cout<<result<<" ";
     return 0;
 }

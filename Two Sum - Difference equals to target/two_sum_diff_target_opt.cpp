@@ -29,7 +29,7 @@ int main(){
     cin>>target;
     result = twoSum7(nums, target);
     for(int i=0; i<result.size(); i++){
-        cout<<result[i];
+        cout<<result[i]<<" ";
     }
     return 0;
 }

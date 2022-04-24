@@ -1,60 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<int>> twoSum(vector<int> arr, int si, int ei, int target) {
-    vector<vector<int>> res;
-    int left = si;
-    int right = ei;
-
-    while (left < right) {
-      if (left != si && arr[left] == arr[left - 1]) {
-        left++;
-        continue;
+vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& G) {
+    vector<vector<int>> ans;
+    queue<vector<int>> q;
+    q.push({0});                                                   // starting node of every path
+    while(size(q)) {
+        auto path = move(q.front()); q.pop();
+        if(path.back() == size(G)-1) ans.push_back(move(path));    // found valid path
+        else
+            for(auto child : G[path.back()]) {                     // try every possible next node in path
+                path.push_back(child);
+                q.push(path);                                      // push path into queue for further exploration
+                path.pop_back();
+            }
     }
-
-    int sum = arr[left] + arr[right];
-    if (sum == target) {
-        vector<int> list;
-        list.push_back(arr[left]);
-        list.push_back(arr[right]);
-        res.push_back(list);
-
-        left++;
-        right--;
-      } else if (sum > target) {
-        right--;
-      } else {
-        left++;
-      }
-    }
-    return res;
+    return ans;
 }
 
-vector<vector<int>> kSumHelper(vector<int> nums, int target, int k, int si) {
-    if (k == 2) {
-      return twoSum(nums, si, nums.size() - 1, target);
-    }
-    vector<vector<int>> res;
-    int n = nums.size();
-    if (n < k) return res;
-    for (int i = si; i <= n - k; i++) {
-      if (i != si && nums[i] == nums[i - 1]) continue;
-
-      int val = nums[i];
-      int targ = target - val;
-      vector<vector<int>> ans = kSumHelper(nums, targ, k - 1, i + 1);
-      for (vector<int> list : ans) {
-        list.push_back(val);
-        res.push_back(list);
-      }
-    }
-    return res;
-}
-
-vector<vector<int>> kSum(vector<int> arr, int target, int k) {
-    sort(arr.begin(), arr.end());
-    return kSumHelper(arr, target, k, 0);
-}
 int main()
 {
     int n,target, K;

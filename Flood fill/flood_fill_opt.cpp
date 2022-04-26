@@ -1,48 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool dfs(vector<vector<int>>& graph, vector<int>& visited, int current, int end) {
-    if(current == end)
-        return true;
-    if(visited[current])
-        return false;
+void dfs(vector<vector<int>>& image, int i, int j,int oldColor ,int newColor){
+
+    if(i < 0 || i >= image.size() || 
+        j < 0 || j >= image[0].size() || 
+    image[i][j] != oldColor) return;
     
-    visited[current] = 1;
+    image[i][j] = newColor;
     
-    for(int i=0; i<graph[current].size(); i++){
-        if(dfs(graph, visited, graph[current][i], end))
-            return true;
-    }
-    
-    return false;
+    dfs(image, i-1, j, oldColor, newColor);
+    dfs(image, i+1, j, oldColor, newColor);
+    dfs(image, i, j-1, oldColor, newColor);
+    dfs(image, i, j+1, oldColor, newColor);
 }
 
-bool validPath(int n, vector<vector<int>>& edges, int start, int end) {
-    vector<vector<int>> graph(n);
-    for(int i=0; i<edges.size(); i++) {
-        graph[edges[i][0]].push_back(edges[i][1]);
-        graph[edges[i][1]].push_back(edges[i][0]);
-    }
-    vector<int> visited(n, 0);
-    return dfs(graph, visited, start, end);
+vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+    
+    int oldColor = image[sr][sc];
+    
+    if(oldColor != newColor) 
+        dfs(image, sr, sc, oldColor ,newColor);
+
+return image;
 }
 int main()
 {
-    int n,m,start, end, temp;
+    int n,m,start, end, color, temp;
     cin>>n;
     cin>>m;
-    vector<vector<int>> edges;
-    for(int i=0; i<m; i++){
+    vector<vector<int>> image;
+    for(int i=0; i<n; i++){
       vector<int> v1;
-      for(int j=0; j<2; j++){
+      for(int j=0; j<m; j++){
         cin>>temp;
         v1.push_back(temp);
       }
-      edges.push_back(v1);
+      image.push_back(v1);
     }
-    cin>>start>>end;
-	bool result =  validPath(n,edges, start, end);
-    cout<<result;
+    cin>>start>>end>>color;
+	vector<vector<int>> result = floodFill(image, start, end, color);
+    for(int i=0; i< result.size(); i++){
+        for(int j=0; j<result[i].size(); j++){
+            cout<<result[i][j]<<" ";
+        }
+        cout<<endl;
+    }
 	return 0;
 }
-  

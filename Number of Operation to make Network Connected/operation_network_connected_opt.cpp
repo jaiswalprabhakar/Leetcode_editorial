@@ -1,51 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void dfs(vector<vector<int>>& image, int i, int j,int oldColor ,int newColor){
-
-    if(i < 0 || i >= image.size() || 
-        j < 0 || j >= image[0].size() || 
-    image[i][j] != oldColor) return;
-    
-    image[i][j] = newColor;
-    
-    dfs(image, i-1, j, oldColor, newColor);
-    dfs(image, i+1, j, oldColor, newColor);
-    dfs(image, i, j-1, oldColor, newColor);
-    dfs(image, i, j+1, oldColor, newColor);
+void dfs(vector<vector<int>> &adj, vector<bool> &visited, int src)
+{
+    visited[src] = true;
+    for(int i : adj[src])
+        if(!visited[i])
+            dfs(adj, visited, i);
 }
-
-vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
-    
-    int oldColor = image[sr][sc];
-    
-    if(oldColor != newColor) 
-        dfs(image, sr, sc, oldColor ,newColor);
-
-return image;
+int makeConnected(int n, vector<vector<int>>& connections) {
+    if(connections.size() < n - 1)
+        return -1;
+    vector<vector<int>> adj(n);
+    for(auto v : connections)
+    {
+        adj[v[0]].push_back(v[1]);
+        adj[v[1]].push_back(v[0]);
+    }
+    vector<bool> visited(n, false);
+    int components = 0;
+    for(int i=0; i<n; i++)
+        if(!visited[i])
+        {
+            dfs(adj, visited, i);
+            components++;
+        }
+    return components - 1;
 }
 int main()
 {
-    int n,m,start, end, color, temp;
-    cin>>n;
-    cin>>m;
-    vector<vector<int>> image;
-    for(int i=0; i<n; i++){
+    int n,m,temp;
+    cin>>n>>m;
+    vector<vector<int>> connection;
+    for(int i=0; i<m; i++){
       vector<int> v1;
-      for(int j=0; j<m; j++){
+      for(int j=0; j<2; j++){
         cin>>temp;
         v1.push_back(temp);
       }
-      image.push_back(v1);
+      connection.push_back(v1);
     }
-    cin>>start>>end>>color;
-	vector<vector<int>> result = floodFill(image, start, end, color);
-    for(int i=0; i< result.size(); i++){
-        for(int j=0; j<result[i].size(); j++){
-            cout<<result[i][j]<<" ";
-        }
-        cout<<endl;
-    }
+	int result = makeConnected(n, connection);
+    cout<<result;
 	return 0;
 }
-  

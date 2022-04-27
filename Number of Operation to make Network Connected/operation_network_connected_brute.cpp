@@ -1,45 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
-    int rows=image.size(), cols=image[0].size(), oldColor=image[sr][sc];
-    if(newColor==oldColor) return image;
-    list<vector<int>> togo; togo.push_back({sr,sc});
-    int dirs[4][2] = {{0,1},{0,-1},{1,0},{-1,0}};
-    while(togo.size()) {
-        int r=togo.front()[0], c=togo.front()[1]; togo.pop_front();
-        image[r][c]=newColor;
-        for(auto& d:dirs) {
-            int rr=r+d[0], cc=c+d[1];
-            if(rr<0 || rr>=rows ||cc<0 ||cc>=cols) continue; // keep togo safe
-            if(image[rr][cc]!=oldColor) continue;            // keep togo clean
-            togo.push_back({rr,cc});
-        }
+int findParent(int pc, unordered_map<int, int>& pcParent){
+    if (pc == pcParent[pc]){
+        return pc;
     }
-    return image;
+    return findParent(pcParent[pc], pcParent);
+}
+int makeConnected(int n, vector<vector<int>>& connections) {
+    int red = 0;
+    unordered_set<int> parents;
+    unordered_map<int, int> pcParent;
+    for (int i = 0; i < n; ++i){
+        pcParent[i] = i;
+    }
+    for (const auto& c : connections){
+        int p1 = findParent(c[0], pcParent), p2 = findParent(c[1], pcParent);
+        pcParent[p1] = p2; // union
+        red += p1 == p2 ? 1 : 0; // redundant edge
+    }
+    for (int i = 0; i < n; ++i){
+        parents.insert(findParent(i, pcParent));
+    }
+    return red >=  parents.size() - 1 ? parents.size() - 1 : -1;
 }
 int main()
 {
-    int n,m,start, end, color, temp;
-    cin>>n;
-    cin>>m;
-    vector<vector<int>> image;
-    for(int i=0; i<n; i++){
+    int n,m,temp;
+    cin>>n>>m;
+    vector<vector<int>> connection;
+    for(int i=0; i<m; i++){
       vector<int> v1;
-      for(int j=0; j<m; j++){
+      for(int j=0; j<2; j++){
         cin>>temp;
         v1.push_back(temp);
       }
-      image.push_back(v1);
+      connection.push_back(v1);
     }
-    cin>>start>>end>>color;
-	vector<vector<int>> result = floodFill(image, start, end, color);
-    for(int i=0; i< result.size(); i++){
-        for(int j=0; j<result[i].size(); j++){
-            cout<<result[i][j]<<" ";
-        }
-        cout<<endl;
-    }
+	int result = makeConnected(n, connection);
+    cout<<result;
 	return 0;
 }
-  
